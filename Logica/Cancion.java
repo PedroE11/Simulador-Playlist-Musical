@@ -1,4 +1,5 @@
 package Logica;
+
 public class Cancion {
     private String titulo;
     private String artista;

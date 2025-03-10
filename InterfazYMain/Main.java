@@ -1,33 +1,61 @@
 package InterfazYMain;
-import Logica.*;
+
+import Logica.Playlist;
+import Controlador.Reproducir;
+import Controlador.Pausar;
+import Controlador.SaltarCancion;
+import Controlador.AgregarNuevas;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Playlist miPlaylist = new Playlist();
+        
+        // Controladores
+        Reproducir controladorReproducir = new Reproducir(miPlaylist);
+        Pausar controladorPausar = new Pausar(miPlaylist);
+        SaltarCancion controladorSaltar = new SaltarCancion(miPlaylist);
+        AgregarNuevas controladorAgregar = new AgregarNuevas(miPlaylist);
 
-        // Agregar canciones
-        miPlaylist.agregarCancion(new Cancion("Bohemian Rhapsody", "Queen", 5.55));
-        miPlaylist.agregarCancion(new Cancion("Billie Jean", "Michael Jackson", 4.54));
-        miPlaylist.agregarCancion(new Cancion("Hotel California", "Eagles", 6.30));
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
 
-        // Mostrar playlist
-        System.out.println("Playlist actual:");
-        miPlaylist.mostrarPlaylist();
+        do {
+            System.out.println("\n--- Simulador de Playlist Musical ---");
+            System.out.println("1. Reproducir canción");
+            System.out.println("2. Saltar canción");
+            System.out.println("3. Pausar canción");
+            System.out.println("4. Mostrar playlist");
+            System.out.println("5. Agregar nueva canción");
+            System.out.println("6. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar buffer
 
-        // Buscar una canción
-        System.out.println("\nBuscando 'Billie Jean'...");
-        Cancion encontrada = miPlaylist.buscarCancion("Billie Jean");
-        if (encontrada != null) {
-            System.out.println("Canción encontrada: " + encontrada);
-        } else {
-            System.out.println("No encontrada.");
-        }
+            switch (opcion) {
+                case 1:
+                    controladorReproducir.ejecutar();
+                    break;
+                case 2:
+                    controladorSaltar.ejecutar();
+                    break;
+                case 3:
+                    controladorPausar.ejecutar();
+                    break;
+                case 4:
+                    miPlaylist.mostrarPlaylist();
+                    break;
+                case 5:
+                    controladorAgregar.ejecutar();
+                    break;
+                case 6:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Intente de nuevo.");
+            }
+        } while (opcion != 6);
 
-        // Eliminar una canción
-        System.out.println("\nEliminando 'Bohemian Rhapsody'...");
-        miPlaylist.eliminarCancion("Bohemian Rhapsody");
-
-        // Mostrar la playlist después de eliminar
-        System.out.println("\nPlaylist después de eliminar:");
-        miPlaylist.mostrarPlaylist();
+        scanner.close();
     }
 }

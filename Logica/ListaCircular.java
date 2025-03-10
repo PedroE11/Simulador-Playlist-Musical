@@ -1,88 +1,99 @@
 package Logica;
+
 public class ListaCircular {
-    private NodoCancion actual;
+    private NodoCancion cabeza;
+    private int tamaño;
 
     public ListaCircular() {
-        this.actual = null;
+        this.cabeza = null;
+        this.tamaño = 0;
     }
 
-    // Método para agregar una canción a la lista
-    public void agregarCancion(Cancion cancion) {
-        NodoCancion nuevoNodo = new NodoCancion(cancion);
-        if (actual == null) {
-            actual = nuevoNodo;
-            actual.setSiguiente(actual); // Se apunta a sí mismo para formar el ciclo
+    public boolean estaVacia() {
+        return cabeza == null;
+    }
+
+    public void agregarCancion(Cancion nuevaCancion) {
+        NodoCancion nuevoNodo = new NodoCancion(nuevaCancion);
+        if (estaVacia()) {
+            cabeza = nuevoNodo;
+            cabeza.setSiguiente(cabeza);
         } else {
-            NodoCancion temp = actual;
-            while (temp.getSiguiente() != actual) {
-                temp = temp.getSiguiente();
+            NodoCancion actual = cabeza;
+            while (actual.getSiguiente() != cabeza) {
+                actual = actual.getSiguiente();
             }
-            temp.setSiguiente(nuevoNodo);
-            nuevoNodo.setSiguiente(actual);
+            actual.setSiguiente(nuevoNodo);
+            nuevoNodo.setSiguiente(cabeza);
         }
+        tamaño++;
     }
 
-    // Método para mostrar todas las canciones en la lista
-    public void mostrarPlaylist() {
-        if (actual == null) {
-            System.out.println("La playlist está vacía.");
-            return;
-        }
-        NodoCancion temp = actual;
-        do {
-            System.out.println(temp.getCancion());
-            temp = temp.getSiguiente();
-        } while (temp != actual);
+    public Cancion obtenerPrimeraCancion() {
+        return estaVacia() ? null : cabeza.getCancion();
     }
 
-    // Método para buscar una canción por título
-    public Cancion buscarCancion(String titulo) {
-        if (actual == null) return null;
-        NodoCancion temp = actual;
+    public Cancion obtenerSiguienteCancion(Cancion actual) {
+        if (estaVacia()) return null;
+        NodoCancion nodoActual = cabeza;
         do {
-            if (temp.getCancion().getTitulo().equalsIgnoreCase(titulo)) {
-                return temp.getCancion();
+            if (nodoActual.getCancion().equals(actual)) {
+                return nodoActual.getSiguiente().getCancion();
             }
-            temp = temp.getSiguiente();
-        } while (temp != actual);
+            nodoActual = nodoActual.getSiguiente();
+        } while (nodoActual != cabeza);
         return null;
     }
 
-    // Método para eliminar una canción por título
     public void eliminarCancion(String titulo) {
-        if (actual == null) {
+        if (estaVacia()) return;
+        NodoCancion actual = cabeza;
+        NodoCancion previo = null;
+        do {
+            if (actual.getCancion().getTitulo().equalsIgnoreCase(titulo)) {
+                if (previo != null) {
+                    previo.setSiguiente(actual.getSiguiente());
+                } else {
+                    cabeza = actual.getSiguiente();
+                }
+                tamaño--;
+                return;
+            }
+            previo = actual;
+            actual = actual.getSiguiente();
+        } while (actual != cabeza);
+    }
+
+    public Cancion buscarCancion(String titulo) {
+        if (estaVacia()) return null;
+        NodoCancion actual = cabeza;
+        do {
+            if (actual.getCancion().getTitulo().equalsIgnoreCase(titulo)) {
+                return actual.getCancion();
+            }
+            actual = actual.getSiguiente();
+        } while (actual != cabeza);
+        return null;
+    }
+
+    public void mostrarPlaylist() {
+        if (estaVacia()) {
             System.out.println("La playlist está vacía.");
             return;
         }
-        NodoCancion temp = actual;
-        NodoCancion anterior = null;
+        NodoCancion actual = cabeza;
         do {
-            if (temp.getCancion().getTitulo().equalsIgnoreCase(titulo)) {
-                if (anterior != null) {
-                    anterior.setSiguiente(temp.getSiguiente());
-                } else { // Si es el primer nodo
-                    if (temp.getSiguiente() == actual) {
-                        actual = null; // Era el único nodo
-                    } else {
-                        actual = temp.getSiguiente();
-                        NodoCancion aux = actual;
-                        while (aux.getSiguiente() != temp) {
-                            aux = aux.getSiguiente();
-                        }
-                        aux.setSiguiente(actual);
-                    }
-                }
-                System.out.println("Canción eliminada: " + titulo);
-                return;
-            }
-            anterior = temp;
-            temp = temp.getSiguiente();
-        } while (temp != actual);
-        System.out.println("Canción no encontrada: " + titulo);
+            System.out.println(actual.getCancion());
+            actual = actual.getSiguiente();
+        } while (actual != cabeza);
     }
 
-    // Método para verificar si la playlist está vacía
-    public boolean estaVacia() {
-        return actual == null;
+    public int tamaño() {
+        return tamaño;
+    }
+
+    public void reiniciarLista() {
+        cabeza = null;
+        tamaño = 0;
     }
 }

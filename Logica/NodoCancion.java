@@ -1,4 +1,5 @@
 package Logica;
+
 public class NodoCancion {
     private Cancion cancion;
     private NodoCancion siguiente;
@@ -10,10 +11,6 @@ public class NodoCancion {
 
     public Cancion getCancion() {
         return cancion;
-    }
-
-    public void setCancion(Cancion cancion) {
-        this.cancion = cancion;
     }
 
     public NodoCancion getSiguiente() {

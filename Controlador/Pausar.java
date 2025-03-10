@@ -2,6 +2,7 @@ package Controlador;
 
 import Logica.Playlist;
 import Logica.Cancion;
+import java.util.Scanner;
 
 public class Pausar {
     private Playlist playlist;
@@ -41,5 +42,25 @@ public class Pausar {
 
     public boolean isEnPausa() {
         return enPausa;
+    }
+
+    // Método ejecutar() agregado
+    public void ejecutar() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1. Pausar reproducción");
+        System.out.println("2. Reanudar reproducción");
+        System.out.print("Elige una opción: ");
+        int opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                pausarReproduccion();
+                break;
+            case 2:
+                reanudarReproduccion();
+                break;
+            default:
+                System.out.println("Opción no válida.");
+        }
     }
 }

@@ -2,6 +2,7 @@ package Controlador;
 
 import Logica.Playlist;
 import Logica.Cancion;
+import java.util.Scanner;
 
 public class Reproducir {
     private Playlist playlist;
@@ -46,5 +47,25 @@ public class Reproducir {
 
     public boolean isEnReproduccion() {
         return enReproduccion;
+    }
+
+    // Método ejecutar() agregado
+    public void ejecutar() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1. Iniciar reproducción");
+        System.out.println("2. Detener reproducción");
+        System.out.print("Elige una opción: ");
+        int opcion = scanner.nextInt();
+
+        switch (opcion) {
+            case 1:
+                iniciarReproduccion();
+                break;
+            case 2:
+                detenerReproduccion();
+                break;
+            default:
+                System.out.println("Opción no válida.");
+        }
     }
 }
