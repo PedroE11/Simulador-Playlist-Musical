@@ -1,48 +1,53 @@
 package Logica;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Playlist {
-    private List<String> canciones;
-    private int indiceActual;
-    private boolean reproduciendo;
+    private ListaCircular listaCanciones;
+    private Cancion cancionActual;
 
     public Playlist() {
-        this.canciones = new ArrayList<>();
-        this.indiceActual = 0;
-        this.reproduciendo = false;
+        this.listaCanciones = new ListaCircular();
+        this.cancionActual = null;
     }
 
-    public void agregarCancion(String cancion) {
-        canciones.add(cancion);
-        System.out.println("Canción agregada: " + cancion);
+    public void agregarCancion(Cancion nuevaCancion) {
+        listaCanciones.agregarCancion(nuevaCancion);
     }
 
-    public void reproducir() {
-        if (!canciones.isEmpty()) {
-            reproduciendo = true;
-            System.out.println("Reproduciendo: " + canciones.get(indiceActual));
-        } else {
-            System.out.println("La playlist está vacía.");
+    public Cancion obtenerPrimeraCancion() {
+        cancionActual = listaCanciones.obtenerPrimeraCancion();
+        return cancionActual;
+    }
+
+    public Cancion obtenerSiguienteCancion() {
+        if (cancionActual == null) {
+            return obtenerPrimeraCancion();
         }
+        cancionActual = listaCanciones.obtenerSiguienteCancion(cancionActual);
+        return cancionActual;
     }
 
-    public void pausar() {
-        if (reproduciendo) {
-            reproduciendo = false;
-            System.out.println("Reproducción pausada.");
-        } else {
-            System.out.println("No hay música reproduciéndose.");
-        }
+    public void eliminarCancion(String titulo) {
+        listaCanciones.eliminarCancion(titulo);
     }
 
-    public void saltar() {
-        if (indiceActual < canciones.size() - 1) {
-            indiceActual++;
-            System.out.println("Saltando a: " + canciones.get(indiceActual));
-        } else {
-            System.out.println("No hay más canciones en la playlist.");
-        }
+    public Cancion buscarCancion(String titulo) {
+        return listaCanciones.buscarCancion(titulo);
+    }
+
+    public void mostrarPlaylist() {
+        listaCanciones.mostrarPlaylist();
+    }
+
+    public boolean estaVacia() {
+        return listaCanciones.estaVacia();
+    }
+
+    public int tamaño() {
+        return listaCanciones.tamaño();
+    }
+
+    public void reiniciarPlaylist() {
+        listaCanciones.reiniciarLista();
+        cancionActual = null;
     }
 }

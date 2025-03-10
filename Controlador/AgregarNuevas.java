@@ -1,6 +1,7 @@
 package Controlador;
 
 import Logica.Playlist;
+import Logica.Cancion;
 
 public class AgregarNuevas {
     private Playlist playlist;
@@ -9,7 +10,9 @@ public class AgregarNuevas {
         this.playlist = playlist;
     }
 
-    public void ejecutar(String cancion) {
-        playlist.agregarCancion(cancion);
+    public void agregarCancion(String titulo, String artista, double duracion) {
+        Cancion nuevaCancion = new Cancion(titulo, artista, duracion);
+        playlist.agregarCancion(nuevaCancion);
+        System.out.println("Canción agregada: " + nuevaCancion.getTitulo() + " - " + nuevaCancion.getArtista());
     }
 }
